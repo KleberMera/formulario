@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Registro Avanzada | Brigada Pancho Tamariz',
-  description: 'Formulario territorial para registrar atenciones ciudadanas.',
+  title: 'Registro Avanzada',
+  description: 'Formulario',
   generator: 'v0.app',
   icons: {
     icon: [
