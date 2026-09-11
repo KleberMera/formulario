@@ -99,7 +99,19 @@ export function MetricasDashboard() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Actividad reciente</p>
             <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950">Últimos registros</h2>
           </div>
-          <p className="text-sm text-slate-500">Mostrando {recentRecords.length} de {allRecords.length}</p>
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-slate-500">Mostrando {recentRecords.length} de {allRecords.length}</p>
+            <button
+              type="button"
+              onClick={() => registros.refetch()}
+              disabled={registros.isFetching}
+              title="Actualizar registros"
+              aria-label="Actualizar registros"
+              className="inline-flex size-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <RefreshCw className={`size-4 ${registros.isFetching ? "animate-spin" : ""}`} />
+            </button>
+          </div>
         </div>
         {recentRecords.length === 0 ? (
           <p className="border-t border-slate-100 p-8 text-center text-slate-500">Todavía no hay registros.</p>
