@@ -169,7 +169,7 @@ function SearchableSelect({
         }}
         className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-base font-normal text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f97316] focus:ring-4 focus:ring-orange-100 disabled:cursor-not-allowed disabled:bg-slate-100"
       />
-      {search && filteredOptions.length > 0 && !value && (
+      {filteredOptions.length > 0 && !value && (
         <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-56 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
           {filteredOptions.map((option) => (
             <button
