@@ -25,6 +25,19 @@ export type RegistroDto = {
   longitud?: number
 }
 
+export type RegistroListado = {
+  r_id: number
+  r_cedula: string | null
+  r_telefono: string | null
+  r_fecha: string
+  r_estado: string
+  provincia_nombre: string | null
+  canton_nombre: string | null
+  barrio_nombre: string | null
+  usuario: string | null
+  registrador_nombre: string | null
+}
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 type ApiResponse<T> = { data: T; message: string; status: number }
 
@@ -44,6 +57,7 @@ export const registroApi = {
   getProvincias: () => request<CatalogItem[]>('/provincia'),
   getCantones: (provinciaId: number) => request<CatalogItem[]>(`/canton/provincia/${provinciaId}`),
   getBarrios: (cantonId: number) => request<CatalogItem[]>(`/barrio/canton/${cantonId}`),
+  listar: () => request<RegistroListado[]>('/registro/listar'),
   crear: (registro: RegistroDto) => request<unknown>('/registro/crear', {
     method: 'POST',
     body: JSON.stringify(registro),
