@@ -10,6 +10,7 @@ import { registroApi, onlyDigits, optionalNumber } from "@/lib/registro-api";
 type FormState = {
   cedula: string;
   telefono: string;
+  codigo: string;
   nombres: string;
   apellidos: string;
   provinciaId: string;
@@ -24,6 +25,7 @@ type FormState = {
 const initialState: FormState = {
   cedula: "",
   telefono: "",
+  codigo: "",
   nombres: "",
   apellidos: "",
   provinciaId: "",
@@ -346,6 +348,7 @@ export function RegistroForm() {
         eventoId: eventoActivo.id,
         cedula: form.cedula || undefined,
         telefono: form.telefono || undefined,
+        codigo: form.codigo || undefined,
         provinciaId: optionalNumber(form.provinciaId),
         cantonId: optionalNumber(form.cantonId),
         barrioId: optionalNumber(form.barrioId),
@@ -480,6 +483,13 @@ export function RegistroForm() {
           </p>
         )}
       </section>
+      <Field
+        label="Código"
+        name="codigo"
+        value={form.codigo}
+        onChange={(v) => update("codigo", v)}
+        placeholder="Opcional"
+      />
       <label
         className="flex flex-col gap-2 text-sm font-semibold text-slate-700"
         htmlFor="observacion"

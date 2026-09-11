@@ -13,6 +13,7 @@ export type Registrador = CatalogItem & {
 export type RegistroDto = {
   cedula?: string
   telefono?: string
+  codigo?: string
   nombres: string
   apellidos: string
   provinciaId?: number
