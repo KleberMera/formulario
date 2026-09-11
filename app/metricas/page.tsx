@@ -1,5 +1,4 @@
-import Link from "next/link"
-import { ArrowLeft, BarChart3 } from "lucide-react"
+import { BarChart3 } from "lucide-react"
 import { QueryProvider } from "@/components/providers/query-provider"
 import { MetricasDashboard } from "@/components/metricas/metricas-dashboard"
 
@@ -10,9 +9,6 @@ export default function MetricasPage() {
         <div className="mx-auto max-w-7xl">
           <header className="mb-8 flex flex-wrap items-start justify-between gap-5">
             <div>
-              <Link href="/" className="mb-5 inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-orange-700">
-                <ArrowLeft className="size-4" /> Volver al formulario
-              </Link>
               <div className="flex items-center gap-3">
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-[#ef4b19] text-white shadow-lg shadow-orange-200">
                   <BarChart3 className="size-6" />
