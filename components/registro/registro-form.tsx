@@ -125,6 +125,71 @@ function SelectField({
   );
 }
 
+function SearchableSelect({
+  label,
+  name,
+  value,
+  onChange,
+  options,
+  disabled,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { id: number; nombre: string }[];
+  disabled?: boolean;
+}) {
+  const selectedOption = options.find((option) => String(option.id) === value);
+  const [search, setSearch] = useState(selectedOption?.nombre ?? "");
+  const filteredOptions = options.filter((option) =>
+    option.nombre.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  useEffect(() => {
+    setSearch(selectedOption?.nombre ?? "");
+  }, [value, selectedOption?.nombre]);
+
+  return (
+    <label
+      className="relative flex flex-col gap-2 text-sm font-semibold text-slate-700"
+      htmlFor={name}
+    >
+      <span>{label}</span>
+      <input
+        id={name}
+        name={name}
+        value={search}
+        disabled={disabled}
+        placeholder="Buscar barrio..."
+        autoComplete="off"
+        onChange={(event) => {
+          setSearch(event.target.value);
+          onChange("");
+        }}
+        className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-base font-normal text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f97316] focus:ring-4 focus:ring-orange-100 disabled:cursor-not-allowed disabled:bg-slate-100"
+      />
+      {search && filteredOptions.length > 0 && !value && (
+        <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-56 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+          {filteredOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => {
+                onChange(String(option.id));
+                setSearch(option.nombre);
+              }}
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-normal text-slate-700 hover:bg-orange-50 hover:text-orange-700"
+            >
+              {option.nombre}
+            </button>
+          ))}
+        </div>
+      )}
+    </label>
+  );
+}
+
 export function RegistroForm() {
   const [form, setForm] = useState(initialState);
   const [locationMessage, setLocationMessage] = useState("");
@@ -187,6 +252,12 @@ export function RegistroForm() {
       update("barrioId", "");
     }
   }, [form.provinciaId]);
+  useEffect(() => {
+    if (form.provinciaId && cantones.data && cantones.data.length === 0) {
+      update("cantonId", "");
+      update("barrioId", "");
+    }
+  }, [form.provinciaId, cantones.data]);
   useEffect(() => {
     if (!form.cantonId) update("barrioId", "");
   }, [form.cantonId]);
@@ -328,22 +399,27 @@ export function RegistroForm() {
           onChange={(v) => update("provinciaId", v)}
           options={provincias.data ?? []}
         />
-        <SelectField
-          label="Cantón"
-          name="cantonId"
-          value={form.cantonId}
-          onChange={(v) => update("cantonId", v)}
-          options={cantones.data ?? []}
-          disabled={!form.provinciaId || cantones.isLoading}
-        />
-        <SelectField
-          label="Barrio"
-          name="barrioId"
-          value={form.barrioId}
-          onChange={(v) => update("barrioId", v)}
-          options={barrios.data ?? []}
-          disabled={!form.cantonId || barrios.isLoading}
-        />
+        {(cantones.isLoading || (cantones.data?.length ?? 0) > 0) && (
+          <SelectField
+            label="Cantón"
+            name="cantonId"
+            value={form.cantonId}
+            onChange={(v) => update("cantonId", v)}
+            options={cantones.data ?? []}
+            disabled={!form.provinciaId || cantones.isLoading}
+          />
+        )}
+        {form.cantonId &&
+          (barrios.isLoading || (barrios.data?.length ?? 0) > 0) && (
+            <SearchableSelect
+              label="Barrio"
+              name="barrioId"
+              value={form.barrioId}
+              onChange={(v) => update("barrioId", v)}
+              options={barrios.data ?? []}
+              disabled={barrios.isLoading}
+            />
+          )}
       </section>
       <section className="grid gap-5 sm:grid-cols-2">
         <SelectField
